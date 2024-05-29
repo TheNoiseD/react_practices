@@ -4,15 +4,23 @@ const Controlado = () => {
     title: "",
     description: "",
     state: "",
+    priority: false,
   });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    const { title, description, state } = todo;
-
-    console.log("enviando datos", { title, description, state });
+    const { title, description, state, priority } = todo;
+    console.log("enviando datos", { title, description, state ,priority });
   };
+
+  const handleChange = (e) => {
+    const {name, value, type, checked} = e.target;
+    setTodo({
+      ...todo,
+      [name]: type === "checkbox" ? checked : value,
+    });
+  };
+
   return (
     <form onSubmit={handleSubmit}>
       <input
@@ -21,12 +29,7 @@ const Controlado = () => {
         className="form-control mb-2"
         name="title"
         value={todo.title}
-        onChange={(e) =>
-          setTodo({
-            ...todo,
-            title: e.target.value,
-          })
-        }
+        onChange={handleChange}
       />
 
       <textarea
@@ -34,24 +37,14 @@ const Controlado = () => {
         placeholder="Ingrese descripcion"
         name="description"
         value={todo.description}
-        onChange={(e) =>
-          setTodo({
-            ...todo,
-            description: e.target.value,
-          })
-        }
+        onChange={handleChange}
       />
 
       <select
         className="form-select mb-2"
         name="state"
         value={todo.state}
-        onChange={(e) =>
-          setTodo({
-            ...todo,
-            state: e.target.value,
-          })
-        }
+        onChange={handleChange}
       >
         <option value="" disabled>
           Seleccione un estado
@@ -59,6 +52,19 @@ const Controlado = () => {
         <option value="pendiente">Pendiente</option>
         <option value="completado">Completado</option>
       </select>
+
+      <div className="form-check mb-2">
+        <input
+          type="checkbox"
+          name="priority"
+          className="form-check-input"
+          id="inputcheck"
+          checked={todo.priority}
+          onChange={handleChange}
+        />
+        <label htmlFor="inputcheck">Dar prioridad?</label>
+      </div>
+
       <button type="submit" className="btn btn-primary">
         Procesar
       </button>
