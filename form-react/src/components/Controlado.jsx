@@ -7,6 +7,8 @@ const Controlado = () => {
     priority: false,
   });
 
+  const [error, setError] = useState(null);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const { title, description, state, priority } = todo;
@@ -68,7 +70,7 @@ const Controlado = () => {
       <button type="submit" className="btn btn-primary">
         Procesar
       </button>
-      {/* {error && <div className="alert alert-danger mt-2">{error}</div>} */}
+     {/*{error && <div className="alert alert-danger mt-2">{error}</div>}*/}
     </form>
   );
 };
