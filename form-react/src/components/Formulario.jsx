@@ -1,5 +1,6 @@
 import { useState } from "react";
-const Controlado = () => {
+import Swal from "sweetalert2";
+const Formulario = ({addTodo}) => {
   const [todo, setTodo] = useState({
     title: "",
     description: "",
@@ -7,13 +8,35 @@ const Controlado = () => {
     priority: false,
   });
 
-  const [error, setError] = useState(null);
+  const [error, setError] = useState('');
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const { title, description, state, priority } = todo;
-    console.log("enviando datos", { title, description, state ,priority });
-  };
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        setError(null);
+        const { title, description, state, priority } = todo;
+
+        if (!title.trim() || !description.trim()){
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Titulo y descripcion son requeridos'
+            });
+            return;
+        }
+        addTodo({
+            id: Date.now(),
+            ...todo,
+            state: state === 'completado'
+        });
+        Swal.fire({
+            icon: 'success',
+            title: 'Tarea agregada',
+            showConfirmButton: false,
+            timer: 1500
+        });
+
+        console.log(todo);
+    };
 
   const handleChange = (e) => {
     const {name, value, type, checked} = e.target;
@@ -68,10 +91,10 @@ const Controlado = () => {
       </div>
 
       <button type="submit" className="btn btn-primary">
-        Procesar
+        Agregar
       </button>
-     {/*{error && <div className="alert alert-danger mt-2">{error}</div>}*/}
+        {error && <div className="alert alert-danger mt-2">{error}</div>}
     </form>
   );
 };
-export default Controlado;
+export default Formulario;
